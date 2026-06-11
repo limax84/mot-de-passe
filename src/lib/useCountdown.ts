@@ -12,7 +12,10 @@ export function useCountdown(onExpire: () => void) {
   const endAt = useRef(0);
   const expired = useRef(false);
   const onExpireRef = useRef(onExpire);
-  onExpireRef.current = onExpire;
+
+  useEffect(() => {
+    onExpireRef.current = onExpire;
+  }, [onExpire]);
 
   const start = useCallback((seconds: number) => {
     endAt.current = Date.now() + seconds * 1000;

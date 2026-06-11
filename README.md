@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mot de passe — le jeu
 
-## Getting Started
+PWA responsive inspirée du jeu télévisé « Mot de passe » (France 2) : faites
+deviner le mot mystère à votre partenaire en donnant des indices d'un seul mot,
+sur un seul téléphone.
 
-First, run the development server:
+![Aperçu](public/icons/icon-192.png)
+
+## Modes de jeu
+
+- **Le Duel** — deux équipes s'affrontent en manches chronométrées (30/45/60 s,
+  1 à 3 manches par équipe). Jusqu'à 5 mots par manche, 1 point par mot trouvé.
+- **La Finale** — choisissez votre mise (500 / 1 000 / 1 500 €) puis faites
+  deviner 5 mots en 90 secondes avec 3 indices maximum par mot. 5/5 : mise
+  doublée (jusqu'à 3 000 €), 3 ou 4 : mise remportée, sinon tout est perdu.
+
+## Base de mots
+
+≈ 950 mots français calibrés en trois niveaux (`src/data/words.ts`) :
+
+| Niveau | Contenu |
+|---|---|
+| Facile | vocabulaire courant et concret |
+| Moyen | vocabulaire abstrait, « comme à la télé » |
+| Difficile | vocabulaire rare, précis ou littéraire |
+
+Un mode « Mélange » pioche dans les trois niveaux. Les mots déjà joués ne
+reviennent pas durant la même partie.
+
+## Stack
+
+- [Next.js](https://nextjs.org) (App Router) + TypeScript
+- Tailwind CSS v4 — thème bleu nuit inspiré du plateau TV
+- PWA : `manifest.webmanifest`, service worker hors ligne (`public/sw.js`),
+  icônes générées par `npm run icons`
+- Sons de plateau générés en WebAudio (aucun asset audio)
+- Tests e2e [Playwright](https://playwright.dev) (desktop + mobile)
+
+## Démarrer
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tester
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm test           # lance les e2e sur http://localhost:3100
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Production
 
-## Learn More
+```bash
+npm run build && npm start
+```
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+L'application s'installe sur l'écran d'accueil (Ajouter à l'écran d'accueil)
+et reste jouable hors ligne après la première visite.
